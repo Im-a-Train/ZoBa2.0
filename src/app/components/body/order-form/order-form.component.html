@@ -1,0 +1,62 @@
+<div>
+  <h1 class="form-heading">{{ stepItems[activeStepIndex].label }}</h1>
+
+  <ng-container *ngFor="let form of masterForm; let i = index; trackBy: trackByFn">
+    <form action="" [formGroup]="masterForm[i]" *ngIf="i === activeStepIndex || masterForm.length === 1">
+      <div class="">
+        <div class="fields-container">
+          <div *ngFor="let field of formFields[i]; trackBy: trackByFn" [ngSwitch]="currentFormContent[i][field].type">
+            <div class="full-width">
+              <mat-form-field>
+                <mat-label class="field-label text-bold">{{ field }}</mat-label>
+
+                <ng-container *ngSwitchCase="'textarea'">
+                  <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5" [id]="field" [formControlName]="field"
+                    [placeholder]="currentFormContent[i][field].placeholder"></textarea>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'select'">
+                  <mat-select [ [formControlName]="field" [id]="field">
+                    <mat-option *ngFor="let option of currentFormContent[i][field].options; trackBy: trackByFn"
+                      [value]="option.name">{{ option.name }}</mat-option>
+                  </mat-select>
+                </ng-container>
+
+                <ng-container *ngSwitchDefault>
+                  <input matInput [type]="currentFormContent[i][field].type" [formControlName]="field" [id]="field"
+                    [placeholder]="currentFormContent[i][field].placeholder" />
+                </ng-container>
+              </mat-form-field>
+            </div>
+            <p class="validation-error" *ngIf="
+                (masterForm[i].get(field)?.dirty ||
+                  masterForm[i].get(field)?.touched) &&
+                masterForm[i].get(field)?.invalid &&
+                masterForm[i].get(field)?.errors
+              ">
+              {{ getValidationMessage(i, field) }}
+            </p>
+          </div>
+        </div>
+
+        <div class="preview-container" *ngIf="activeStepIndex === stepItems.length - 1">
+          <ul>
+            <li class="form-details-list" *ngFor="let field of masterFormFields; trackBy: trackByFn">
+              <span class="text-bold">{{ field }}</span>
+              <span>{{ formData[field] || 'N/A' }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="button-container">
+          <button type="button" [disabled]="!activeStepIndex" (click)="goToStep('prev')">Previous</button>
+          <button *ngIf="activeStepIndex === stepItems.length - 1" type="button"
+            (click)="onFormSubmit()">Submit</button>
+          <button type="button" [disabled]="activeStepIndex === stepItems.length - 1 || masterForm[i].invalid"
+            (click)="goToStep('next')">Next</button>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</div>
