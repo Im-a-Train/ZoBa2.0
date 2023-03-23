@@ -17,6 +17,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BodyComponent } from './components/body/body.component';
 import { OrderFormComponent } from './components/body/order-form/order-form.component';
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatProgressBarModule } from "@angular/material/progress-bar"
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +37,8 @@ import { MatFormFieldModule } from "@angular/material/form-field";
     MatRadioModule,
     MatCardModule,
     ReactiveFormsModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatProgressBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

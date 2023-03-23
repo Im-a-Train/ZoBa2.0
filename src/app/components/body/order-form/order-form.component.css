@@ -25,3 +25,15 @@
 .col:last-child {
   margin-right: 0;
 }
+
+/* Hide number field buttons */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

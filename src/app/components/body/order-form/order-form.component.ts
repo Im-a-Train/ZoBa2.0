@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FORM_STEPS } from './order-form.data';
 
@@ -23,7 +23,7 @@ export class OrderFormComponent {
   currentFormContent: Array<any> = [];
   formData: any;
   formFields: Array<Array<string>> = [];
-  masterFormFields: Array<string> = [];
+  masterFormFields = new Map<string, string>;
   stepItems: Array<any> = [];
   masterForm: Array<FormGroup> = [];
 
@@ -40,12 +40,14 @@ export class OrderFormComponent {
     this.stepItems.forEach((data, i) => {
       // holds name, validators, placeholder of all steps
       this.currentFormContent.push(this.stepItems[i]['data']);
-
       // holds string values for each field of all steps
       this.formFields.push(Object.keys(this.currentFormContent[i]));
-
       // holds all form groups
       this.masterForm.push(this.buildForm(this.currentFormContent[i]));
+      // Store Field names
+      Object.keys(this.currentFormContent[i]).forEach((field) => {
+        this.masterFormFields.set(field, (this.currentFormContent[i][field].label || field))
+      })
     });
   }
 
@@ -66,11 +68,9 @@ export class OrderFormComponent {
   // get validator(s) for each field, if any
   getValidators(formField: any): Validators {
     const fieldValidators = Object.keys(formField.validations).map((validator) => {
-      if (validator === 'required') {
+      if (validator === 'required' || validator === 'email') {
         return Validators[validator];
       } else {
-        console.log(validator);
-
         return (Validators as any)[validator](formField.validations[validator]);
       }
     });
@@ -101,7 +101,7 @@ export class OrderFormComponent {
       {}
     );
 
-    this.masterFormFields = Object.keys(this.formData);
+    // this.masterFormFields = Object.keys(this.formData);
   }
 
   onFormSubmit(): void {

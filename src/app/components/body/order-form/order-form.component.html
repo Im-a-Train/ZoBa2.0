@@ -8,16 +8,16 @@
           <div *ngFor="let field of formFields[i]; trackBy: trackByFn" [ngSwitch]="currentFormContent[i][field].type">
             <div class="full-width">
               <mat-form-field>
-                <mat-label class="field-label text-bold">{{ field }}</mat-label>
+                <mat-label class="field-label text-bold">{{currentFormContent[i][field].label || field }}</mat-label>
 
                 <ng-container *ngSwitchCase="'textarea'">
-                  <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                  <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
                     cdkAutosizeMaxRows="5" [id]="field" [formControlName]="field"
                     [placeholder]="currentFormContent[i][field].placeholder"></textarea>
                 </ng-container>
 
                 <ng-container *ngSwitchCase="'select'">
-                  <mat-select [ [formControlName]="field" [id]="field">
+                  <mat-select matInput [formControlName]="field" [id]="field">
                     <mat-option *ngFor="let option of currentFormContent[i][field].options; trackBy: trackByFn"
                       [value]="option.name">{{ option.name }}</mat-option>
                   </mat-select>
@@ -42,19 +42,23 @@
 
         <div class="preview-container" *ngIf="activeStepIndex === stepItems.length - 1">
           <ul>
-            <li class="form-details-list" *ngFor="let field of masterFormFields; trackBy: trackByFn">
-              <span class="text-bold">{{ field }}</span>
-              <span>{{ formData[field] || 'N/A' }}</span>
+            <li class="form-details-list" *ngFor="let field of masterFormFields| keyvalue; trackBy: trackByFn">
+              <span class="text-bold">{{field.value}}</span>
+              <b>: {{ formData[field.key] || 'N/A' }}</b>
             </li>
           </ul>
         </div>
+        <mat-progress-bar mode="determinate" [value]='100 / (stepItems.length-1) * activeStepIndex'></mat-progress-bar>
 
         <div class="button-container">
-          <button type="button" [disabled]="!activeStepIndex" (click)="goToStep('prev')">Previous</button>
-          <button *ngIf="activeStepIndex === stepItems.length - 1" type="button"
+          <button mat-raised-button type="button" [disabled]="!activeStepIndex"
+            (click)="goToStep('prev')">Previous</button>
+          <button mat-raised-button type="button"
+            [disabled]="activeStepIndex === stepItems.length - 1 || masterForm[i].invalid" (click)="goToStep('next')"
+            *ngIf="activeStepIndex !== stepItems.length - 1">Next</button>
+          <button mat-raised-button *ngIf="activeStepIndex === stepItems.length - 1" type="button"
             (click)="onFormSubmit()">Submit</button>
-          <button type="button" [disabled]="activeStepIndex === stepItems.length - 1 || masterForm[i].invalid"
-            (click)="goToStep('next')">Next</button>
+
         </div>
       </div>
     </form>
