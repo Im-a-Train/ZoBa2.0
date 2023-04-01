@@ -1,6 +1,5 @@
-<div>
+<div class="order-form">
   <h1 class="form-heading">{{ stepItems[activeStepIndex].label }}</h1>
-
   <ng-container *ngFor="let form of masterForm; let i = index; trackBy: trackByFn">
     <form action="" [formGroup]="masterForm[i]" *ngIf="i === activeStepIndex || masterForm.length === 1">
       <div class="">
@@ -9,20 +8,17 @@
             <div class="full-width">
               <mat-form-field>
                 <mat-label class="field-label text-bold">{{currentFormContent[i][field].label || field }}</mat-label>
-
                 <ng-container *ngSwitchCase="'textarea'">
                   <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
                     cdkAutosizeMaxRows="5" [id]="field" [formControlName]="field"
                     [placeholder]="currentFormContent[i][field].placeholder"></textarea>
                 </ng-container>
-
                 <ng-container *ngSwitchCase="'select'">
                   <mat-select matInput [formControlName]="field" [id]="field">
                     <mat-option *ngFor="let option of currentFormContent[i][field].options; trackBy: trackByFn"
-                      [value]="option.name">{{ option.name }}</mat-option>
+                      [value]="option.code">{{ option.name }}</mat-option>
                   </mat-select>
                 </ng-container>
-
                 <ng-container *ngSwitchDefault>
                   <input matInput [type]="currentFormContent[i][field].type" [formControlName]="field" [id]="field"
                     [placeholder]="currentFormContent[i][field].placeholder" />
@@ -39,26 +35,22 @@
             </p>
           </div>
         </div>
-
         <div class="preview-container" *ngIf="activeStepIndex === stepItems.length - 1">
-          <ul>
-            <li class="form-details-list" *ngFor="let field of masterFormFields| keyvalue; trackBy: trackByFn">
-              <span class="text-bold">{{field.value}}</span>
-              <b>: {{ formData[field.key] || 'N/A' }}</b>
-            </li>
-          </ul>
+          <mat-list class="form-details-list" *ngFor="let field of masterFormFields">
+            <mat-list-item> <span class="text-bold">{{field.value}}</span>
+              <b>: {{ formData[field.key] || '-' }}</b></mat-list-item>
+          </mat-list>
         </div>
-        <mat-progress-bar mode="determinate" [value]='100 / (stepItems.length-1) * activeStepIndex'></mat-progress-bar>
-
+        <mat-progress-bar class="form-progress" mode="determinate"
+          [value]='100 / (stepItems.length-1) * activeStepIndex'></mat-progress-bar>
         <div class="button-container">
-          <button mat-raised-button type="button" [disabled]="!activeStepIndex"
-            (click)="goToStep('prev')">Previous</button>
-          <button mat-raised-button type="button"
+          <button id="form-back-button" *ngIf="activeStepIndex > 0" mat-raised-button type="button"
+            [disabled]="!activeStepIndex" (click)="goToStep('prev')">Zurück</button>
+          <button id="form-next-button" mat-raised-button type="button"
             [disabled]="activeStepIndex === stepItems.length - 1 || masterForm[i].invalid" (click)="goToStep('next')"
-            *ngIf="activeStepIndex !== stepItems.length - 1">Next</button>
-          <button mat-raised-button *ngIf="activeStepIndex === stepItems.length - 1" type="button"
-            (click)="onFormSubmit()">Submit</button>
-
+            *ngIf="activeStepIndex !== stepItems.length - 1">Weiter</button>
+          <button id="form-finish-button" mat-raised-button *ngIf="activeStepIndex === stepItems.length - 1"
+            type="button" (click)="onFormSubmit()">Abschicken</button>
         </div>
       </div>
     </form>

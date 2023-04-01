@@ -2,14 +2,16 @@
   width: 100%;
 }
 
-.shipping-card {
-  min-width: 120px;
-  margin: 20px auto;
-}
-
 .mat-radio-button {
   display: block;
   margin: 5px 0;
+}
+
+.form-progress {
+  height: 10pt;
+  border-radius: 2.5pt;
+  width: 95%;
+  margin-left: 2.5%;
 }
 
 .row {
@@ -24,6 +26,30 @@
 
 .col:last-child {
   margin-right: 0;
+}
+
+#form-back-button {
+  float: left;
+}
+
+#form-next-button {
+  float: right;
+}
+
+.button-container {
+  overflow: auto;
+}
+
+#form-finish-button {
+  float: right;
+}
+
+button {
+  margin: 5pt;
+}
+
+mat-form-field {
+  width: 100%;
 }
 
 /* Hide number field buttons */

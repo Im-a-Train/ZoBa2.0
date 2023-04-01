@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FORM_STEPS } from './order-form.data';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
 
 interface IStringIndex {
   [key: string]: any
@@ -13,9 +13,8 @@ interface IStringIndex {
 })
 
 
-export class OrderFormComponent {
-
-  // @Input() formContent: any;
+export class OrderFormComponent implements OnInit {
+  @Input() formContent: any;
 
   @Output() readonly formSubmit: EventEmitter<any> = new EventEmitter<any>();
 
@@ -23,18 +22,17 @@ export class OrderFormComponent {
   currentFormContent: Array<any> = [];
   formData: any;
   formFields: Array<Array<string>> = [];
-  masterFormFields = new Map<string, string>;
+  masterFormFields: Array<any> = [];
   stepItems: Array<any> = [];
   masterForm: Array<FormGroup> = [];
 
   constructor(
-    private readonly _formBuilder: FormBuilder
+    private readonly _formBuilder: FormBuilder,
+    private recaptchaV3Service: ReCaptchaV3Service,
   ) { }
 
   ngOnInit() {
-    // TODO: add interfaces and enums wherever appropriate
-
-    this.stepItems = FORM_STEPS;
+    this.stepItems = this.formContent;
 
     // NOTE: this can be cofigured to create a single form when needed
     this.stepItems.forEach((data, i) => {
@@ -46,9 +44,14 @@ export class OrderFormComponent {
       this.masterForm.push(this.buildForm(this.currentFormContent[i]));
       // Store Field names
       Object.keys(this.currentFormContent[i]).forEach((field) => {
-        this.masterFormFields.set(field, (this.currentFormContent[i][field].label || field))
+
+        this.masterFormFields.push({ key: field, value: (this.currentFormContent[i][field].label || field) })
+        //this.masterFormFields.set(field, (this.currentFormContent[i][field].label || field))
       })
+
     });
+
+    console.log(this.masterFormFields)
   }
 
   // build separate FormGroups for each form
@@ -100,13 +103,18 @@ export class OrderFormComponent {
       (masterForm, currentForm) => ({ ...masterForm, ...currentForm.value }),
       {}
     );
-
-    // this.masterFormFields = Object.keys(this.formData);
   }
 
   onFormSubmit(): void {
     // emit aggregate form data to parent component, where we POST
+    this.recaptchaV3Service.execute('ZoBa Order')
+      .subscribe((token: string) => {
+      });
     this.formSubmit.emit(this.formData);
+
+
+
+
   }
 
   trackByFn(index: number): number {
