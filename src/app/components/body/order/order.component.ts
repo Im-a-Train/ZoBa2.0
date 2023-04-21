@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ZoBaService } from 'src/app/services/zo-ba.service';
 import { FORM_STEPS } from './order-form.data';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order',
@@ -13,7 +14,7 @@ import { ReCaptchaV3Service } from 'ng-recaptcha';
 export class OrderComponent {
 
 
-  constructor(private recaptchaV3Service: ReCaptchaV3Service, private zoBaService: ZoBaService, private snackBar: MatSnackBar,) {
+  constructor(private recaptchaV3Service: ReCaptchaV3Service, private zoBaService: ZoBaService, private snackBar: MatSnackBar, private _router: Router) {
 
   }
   formContent: any;
@@ -27,21 +28,27 @@ export class OrderComponent {
   onFormSubmit(formData: any): void {
     this.recaptchaV3Service.execute('zoba_order')
       .subscribe((token) => {
+        console.log(token)
         this.formData = { ...formData, ...{ captcha: token } }
         this.zoBaService.postOrder(this.formData).subscribe(
           {
-            error: (err) => {
-              console.log(JSON.stringify(err))
-              this.snackBar.open(`Der Wert ${err.error.errors[0].value} ist ungültig. \n Grund: ${err.error.errors[0].msg}`)
+            next: (response) => {
+              console.log(JSON.stringify(response))
+              if (response.error) {
+                this.snackBar.open(`Es ist ein Fehleraufgetreten. \n Grund: ${response.error.description}`)
+              } else {
+                this.snackBar.open('Bestellung erfolgreich', '', {
+                  duration: 3000
+                }).afterDismissed().subscribe(() => this._router.navigate(['/statistics']))
+              }
             },
-            complete: () => {
-              this.snackBar.open('Bestellung erfolgreich', '', {
-                duration: 3000
-              })
-            }
+            error: (err) => {
+              this.snackBar.open(`Es ist ein Fehleraufgetreten. \n Grund: ${err.sg}`)
+
+            },
           }
         )
-      }).unsubscribe
+      }).unsubscribe()
 
   }
 }

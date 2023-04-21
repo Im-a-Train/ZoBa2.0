@@ -44,14 +44,10 @@ export class OrderFormComponent implements OnInit {
       this.masterForm.push(this.buildForm(this.currentFormContent[i]));
       // Store Field names
       Object.keys(this.currentFormContent[i]).forEach((field) => {
-
         this.masterFormFields.push({ key: field, value: (this.currentFormContent[i][field].label || field) })
-        //this.masterFormFields.set(field, (this.currentFormContent[i][field].label || field))
       })
 
     });
-
-    console.log(this.masterFormFields)
   }
 
   // build separate FormGroups for each form

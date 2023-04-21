@@ -1,17 +1,15 @@
-<mat-card class="order">
-    <mat-card-header>
-        <mat-card-title>
-            Bestellformular für feine Züpfen
-        </mat-card-title>
-        <mat-card-subtitle>
-            Bitte erfasse die Daten vollständig und korrekt. Damit ermöglichst du uns die
-            zuverlässige Lieferung der Züpfen und ersparst uns Arbeit. Die Angaben werden ausschliesslich für die
-            Lieferung der Züpfen verwendet. Falls du keine E-Mailadresse hast, kannst du die Bestellung auch ohne
-            Mailangabe erfassen. Diese benutzen wir, um eine Bestätigungs- und Erinnerungsmail zu
-            versenden.
-        </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-        <app-order-form [formContent]="formContent" (formSubmit)="onFormSubmit($event)"></app-order-form>
-    </mat-card-content>
-</mat-card>
+<mat-card-header>
+    <mat-card-title>
+        Bestellformular für feine Züpfen
+    </mat-card-title>
+    <mat-card-subtitle>
+        Bitte erfasse die Daten vollständig und korrekt. Damit ermöglichst du uns die
+        zuverlässige Lieferung der Züpfen und ersparst uns Arbeit. Die Angaben werden ausschliesslich für die
+        Lieferung der Züpfen verwendet. Falls du keine E-Mailadresse hast, kannst du die Bestellung auch ohne
+        Mailangabe erfassen. Diese benutzen wir, um eine Bestätigungs- und Erinnerungsmail zu
+        versenden.
+    </mat-card-subtitle>
+</mat-card-header>
+<mat-card-content>
+    <app-order-form [formContent]="formContent" (formSubmit)="onFormSubmit($event)"></app-order-form>
+</mat-card-content>

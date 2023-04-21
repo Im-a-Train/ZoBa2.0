@@ -7,12 +7,17 @@ export interface FormField {
     label: string | undefined
 }
 
+export interface Organisation {
+    name: string,
+    code: string
+}
+
 const ORDER_TIMES = [
     { name: 'Egal (8:00-11:00)', code: 'ANY' },
     { name: '8:00-9:30', code: 'EARLY' },
     { name: '9:30-11:00', code: 'LATER' }
 ]
-const ORGANISATIONS = [
+export const ORGANISATIONS: Organisation[] = [
     { name: 'Pfadi Kuonolf', code: 'KUONOLF' },
     { name: 'Pfadi Chutze', code: 'CHUTZE' },
     { name: 'Pfadi Worb', code: 'WORB' },

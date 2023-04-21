@@ -1,0 +1,9 @@
+<mat-card class="statistics">
+    <mat-card-header>
+        <mat-card-title>
+            Es wurden bereits {{totalOrders}} Züpfen bestellt
+        </mat-card-title>
+    </mat-card-header>
+    <mat-progress-bar class="form-progress" mode="determinate"
+        [value]='100 / orderTarget * totalOrders'></mat-progress-bar>
+</mat-card>

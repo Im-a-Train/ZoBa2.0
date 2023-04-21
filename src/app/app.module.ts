@@ -33,6 +33,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { SideNavigationComponent } from './components/body/side-navigation/side-navigation.component';
 import { HomeComponent } from './components/body/home/home.component';
 import { OrderFormComponent } from './components/body/order/order-form/order-form.component';
+import { StatisticsComponent } from './components/body/statistics/statistics.component';
 
 @NgModule({
   declarations: [
@@ -46,12 +47,15 @@ import { OrderFormComponent } from './components/body/order/order-form/order-for
     OrderComponent,
     SideNavigationComponent,
     HomeComponent,
+    StatisticsComponent,
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot([
+      { path: '', redirectTo: '/home', pathMatch: 'full' },
       { path: 'order', component: OrderComponent, pathMatch: 'full' },
-      { path: '', component: HomeComponent, pathMatch: 'full' }
+      { path: 'statistic', component: StatisticsComponent, pathMatch: 'full' },
+      { path: 'home', component: HomeComponent, pathMatch: 'full' }
     ]),
     AppRoutingModule,
     BrowserAnimationsModule,

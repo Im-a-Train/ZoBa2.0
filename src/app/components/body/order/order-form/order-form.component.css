@@ -8,9 +8,10 @@
 }
 
 .form-progress {
-  height: 10pt;
+  scale: 1 300%;
   border-radius: 2.5pt;
   width: 95%;
+  max-width: 95%;
   margin-left: 2.5%;
 }
 
@@ -45,7 +46,7 @@
 }
 
 button {
-  margin: 5pt;
+  margin: 10pt;
 }
 
 mat-form-field {
